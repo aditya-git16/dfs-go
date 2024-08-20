@@ -1,9 +1,20 @@
 package p2p
 
-import "net"
+import (
+	"net"
+	"sync"
+)
 
 type TCPTransport struct {
-	ListenAddress string
-	Listener 	  net.Listener
-	peers 		  map[net.Addr]
+	listenAddress string
+	listener 	  net.Listener
+
+	mu 			  sync.RWMutex
+	peers 		  map[net.Addr]Peer
+}
+
+func NewTCPTransport(listenAddr string) *TCPTransport {
+	return &TCPTransport{
+		listenAddress: listenAddr,
+	}
 }
